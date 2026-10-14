@@ -10,11 +10,13 @@ class EquipmentIssue extends Model
     use HasFactory;
 
     protected $fillable = [
-        'lab_number',
-        'equipment_type',
+        'category',
+        'location',
         'issue_description',
         'reported_by',
         'severity',
         'status',
+        'photo_path',
+        'user_id',
     ];
 }

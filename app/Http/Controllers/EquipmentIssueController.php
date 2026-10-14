@@ -25,70 +25,35 @@ class EquipmentIssueController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'lab_number' => 'required|in:Lab A,Lab B,Lab C,Mac Lab',
-            'equipment_type' => 'required|in:Monitor,Keyboard,Mouse,LAN Cable',
-            'issue_description' => 'required|string',
-            'reported_by' => 'required|string|max:100',
+            'category' => 'required|in:Roads & walkways,Drainage & flooding,Waste & sanitation,Street lighting,Water supply,Public safety,Other',
+            'location' => 'required|string|max:255',
+            'issue_description' => 'required|string|max:5000',
             'severity' => 'required|in:Low,Medium,High',
+            'photo' => 'nullable|image|max:5120',
         ]);
 
+        $photoPath = $request->file('photo')?->store('issue-photos', 'public');
+
         EquipmentIssue::create([
-            'lab_number' => $validated['lab_number'],
-            'equipment_type' => $validated['equipment_type'],
+            'category' => $validated['category'],
+            'location' => $validated['location'],
             'issue_description' => $validated['issue_description'],
-            'reported_by' => $validated['reported_by'],
+            'reported_by' => $request->user()->name,
             'severity' => $validated['severity'],
+            'photo_path' => $photoPath,
+            'user_id' => $request->user()->id,
             'status' => 'Open',
         ]);
 
         return redirect()
             ->route('equipment-issues.index')
-            ->with('success', 'Equipment issue reported successfully.');
+            ->with('success', 'Community issue reported successfully.');
     }
 
-    public function show(EquipmentIssue $equipmentIssue)
+    public function resolve(EquipmentIssue $equipmentIssue, Request $request)
     {
-        return Inertia::render('EquipmentIssues/Show', [
-            'issue' => $equipmentIssue,
-        ]);
-    }
+        abort_unless($request->user()->isStaff(), 403);
 
-    public function edit(EquipmentIssue $equipmentIssue)
-    {
-        return Inertia::render('EquipmentIssues/Edit', [
-            'issue' => $equipmentIssue,
-        ]);
-    }
-
-    public function update(Request $request, EquipmentIssue $equipmentIssue)
-    {
-        $validated = $request->validate([
-            'lab_number' => 'required|in:Lab A,Lab B,Lab C,Mac Lab',
-            'equipment_type' => 'required|in:Monitor,Keyboard,Mouse,LAN Cable',
-            'issue_description' => 'required|string',
-            'reported_by' => 'required|string|max:100',
-            'severity' => 'required|in:Low,Medium,High',
-            'status' => 'required|in:Open,Resolved',
-        ]);
-
-        $equipmentIssue->update($validated);
-
-        return redirect()
-            ->route('equipment-issues.index')
-            ->with('success', 'Equipment issue updated successfully.');
-    }
-
-    public function destroy(EquipmentIssue $equipmentIssue)
-    {
-        $equipmentIssue->delete();
-
-        return redirect()
-            ->route('equipment-issues.index')
-            ->with('success', 'Equipment issue deleted successfully.');
-    }
-
-    public function resolve(EquipmentIssue $equipmentIssue)
-    {
         $equipmentIssue->update([
             'status' => 'Resolved',
         ]);

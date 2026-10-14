@@ -1,8 +1,10 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, Link, router } from '@inertiajs/react';
+import { Head, Link, router, usePage } from '@inertiajs/react';
 import { useState } from 'react';
 
 export default function Index({ issues, flash }) {
+    const { auth } = usePage().props;
+    const isStaff = auth.user.role === 'staff';
     const [search, setSearch] = useState('');
     const [severityFilter, setSeverityFilter] = useState('All');
     const [statusFilter, setStatusFilter] = useState('All');
@@ -11,8 +13,8 @@ export default function Index({ issues, flash }) {
         const searchValue = search.toLowerCase();
 
         const matchesSearch =
-            issue.lab_number.toLowerCase().includes(searchValue) ||
-            issue.equipment_type.toLowerCase().includes(searchValue) ||
+            (issue.location || '').toLowerCase().includes(searchValue) ||
+            (issue.category || issue.equipment_type || '').toLowerCase().includes(searchValue) ||
             issue.issue_description.toLowerCase().includes(searchValue) ||
             issue.reported_by.toLowerCase().includes(searchValue);
 
@@ -40,12 +42,6 @@ export default function Index({ issues, flash }) {
         (issue) => issue.status === 'Resolved'
     ).length;
 
-    const deleteIssue = (id) => {
-        if (confirm('Are you sure you want to delete this issue?')) {
-            router.delete(route('equipment-issues.destroy', id));
-        }
-    };
-
     const resolveIssue = (id) => {
         if (confirm('Mark this issue as resolved?')) {
             router.patch(
@@ -59,16 +55,16 @@ export default function Index({ issues, flash }) {
             header={
                 <div>
                     <p className="text-sm font-medium text-indigo-600">
-                        IT Support Desk
+                        Barangay Services
                     </p>
 
                     <h2 className="mt-1 text-2xl font-bold text-gray-900">
-                        Equipment Issue Logger
+                        Community issue register
                     </h2>
                 </div>
             }
         >
-            <Head title="Equipment Issues" />
+            <Head title="Community Issues" />
 
             {flash?.success && (
                 <div className="mx-auto mb-6 max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -84,15 +80,15 @@ export default function Index({ issues, flash }) {
                     <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
                         <div>
                             <p className="text-sm font-semibold uppercase tracking-wider text-indigo-600">
-                                Computer Lab Diagnostics
+                                Barangay issue tracker
                             </p>
 
                             <h1 className="mt-2 text-3xl font-bold tracking-tight text-gray-900">
-                                Fault Tracking Desk
+                                Community Issues
                             </h1>
 
                             <p className="mt-2 max-w-2xl text-sm leading-6 text-gray-500">
-                                Report, monitor, and manage damaged or malfunctioning laboratory equipment.
+                                Browse reports from residents, check attached evidence, and track follow-up.
                             </p>
                         </div>
 
@@ -100,7 +96,7 @@ export default function Index({ issues, flash }) {
                             href={route('equipment-issues.create')}
                             className="inline-flex w-fit items-center rounded-md bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-indigo-700"
                         >
-                            Report Equipment Issue
+                            Report an Issue
                         </Link>
                     </div>
 
@@ -108,7 +104,7 @@ export default function Index({ issues, flash }) {
 
                         <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
                             <p className="text-sm font-medium text-gray-500">
-                                Open Tickets
+                                Open reports
                             </p>
 
                             <p className="mt-3 text-3xl font-bold text-gray-900">
@@ -122,7 +118,7 @@ export default function Index({ issues, flash }) {
 
                         <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
                             <p className="text-sm font-medium text-gray-500">
-                                High Severity
+                                High priority
                             </p>
 
                             <p className="mt-3 text-3xl font-bold text-red-600">
@@ -155,11 +151,11 @@ export default function Index({ issues, flash }) {
                         <div className="border-b border-gray-200 p-6">
                             <div>
                                 <h2 className="text-xl font-bold text-gray-900">
-                                    Reported Equipment Issues
+                                    Reported Community Issues
                                 </h2>
 
                                 <p className="mt-1 text-sm text-gray-500">
-                                    View and manage laboratory equipment faults.
+                                    Search and filter neighborhood concerns.
                                 </p>
                             </div>
 
@@ -243,7 +239,7 @@ export default function Index({ issues, flash }) {
                         {filteredIssues.length === 0 ? (
                             <div className="p-12 text-center">
                                 <h3 className="text-lg font-semibold text-gray-900">
-                                    No equipment issues found
+                                        No community issues found
                                 </h3>
 
                                 <p className="mt-2 text-sm text-gray-500">
@@ -264,11 +260,11 @@ export default function Index({ issues, flash }) {
                                     <thead>
                                         <tr className="border-b border-gray-200 bg-gray-50 text-left">
                                             <th className="px-6 py-4 text-xs font-semibold uppercase tracking-wide text-gray-500">
-                                                Laboratory
+                                                Location
                                             </th>
 
                                             <th className="px-6 py-4 text-xs font-semibold uppercase tracking-wide text-gray-500">
-                                                Equipment
+                                                Category
                                             </th>
 
                                             <th className="px-6 py-4 text-xs font-semibold uppercase tracking-wide text-gray-500">
@@ -300,15 +296,22 @@ export default function Index({ issues, flash }) {
                                                 className="border-b border-gray-100 last:border-b-0 hover:bg-gray-50"
                                             >
                                                 <td className="px-6 py-4 text-sm font-medium text-gray-900">
-                                                    {issue.lab_number}
+                                                    {issue.location || 'Location not provided'}
                                                 </td>
 
                                                 <td className="px-6 py-4 text-sm text-gray-700">
-                                                    {issue.equipment_type}
+                                                    {issue.category || issue.equipment_type || 'Other'}
                                                 </td>
 
                                                 <td className="max-w-xs px-6 py-4 text-sm text-gray-600">
-                                                    {issue.issue_description}
+                                                    <div className="flex items-center gap-3">
+                                                        {issue.photo_path && (
+                                                            <a href={`/storage/${issue.photo_path}`} target="_blank" rel="noreferrer">
+                                                                <img src={`/storage/${issue.photo_path}`} alt="Issue evidence" className="h-12 w-16 rounded object-cover" />
+                                                            </a>
+                                                        )}
+                                                        <span>{issue.issue_description}</span>
+                                                    </div>
                                                 </td>
 
                                                 <td className="px-6 py-4 text-sm text-gray-700">
@@ -343,38 +346,15 @@ export default function Index({ issues, flash }) {
 
                                                 <td className="px-6 py-4">
                                                     <div className="flex items-center gap-3">
-
-                                                        {issue.status === 'Open' && (
+                                                        {isStaff && issue.status === 'Open' && (
                                                             <button
                                                                 type="button"
-                                                                onClick={() =>
-                                                                    resolveIssue(issue.id)
-                                                                }
-                                                                className="text-sm font-semibold text-green-600 hover:text-green-800"
+                                                                onClick={() => resolveIssue(issue.id)}
+                                                                className="text-sm font-semibold text-green-700 hover:text-green-900"
                                                             >
                                                                 Resolve
                                                             </button>
                                                         )}
-
-                                                        <Link
-                                                            href={route(
-                                                                'equipment-issues.edit',
-                                                                issue.id
-                                                            )}
-                                                            className="text-sm font-semibold text-indigo-600 hover:text-indigo-800"
-                                                        >
-                                                            Edit
-                                                        </Link>
-
-                                                        <button
-                                                            type="button"
-                                                            onClick={() =>
-                                                                deleteIssue(issue.id)
-                                                            }
-                                                            className="text-sm font-semibold text-red-600 hover:text-red-800"
-                                                        >
-                                                            Delete
-                                                        </button>
 
                                                     </div>
                                                 </td>

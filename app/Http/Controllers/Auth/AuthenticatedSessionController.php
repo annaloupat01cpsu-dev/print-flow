@@ -24,12 +24,40 @@ class AuthenticatedSessionController extends Controller
         ]);
     }
 
+    public function createStaff(): Response
+    {
+        return Inertia::render('Auth/Login', [
+            'canResetPassword' => Route::has('password.request'),
+            'status' => session('status'),
+            'isStaffLogin' => true,
+        ]);
+    }
+
     /**
      * Handle an incoming authentication request.
      */
     public function store(LoginRequest $request): RedirectResponse
     {
         $request->authenticate();
+
+        $request->session()->regenerate();
+
+        return redirect()->intended(route('dashboard', absolute: false));
+    }
+
+    public function storeStaff(LoginRequest $request): RedirectResponse
+    {
+        $request->authenticate();
+
+        if (! $request->user()->isStaff()) {
+            Auth::guard('web')->logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+
+            return back()->withErrors([
+                'email' => 'These credentials do not belong to a staff account.',
+            ]);
+        }
 
         $request->session()->regenerate();
 

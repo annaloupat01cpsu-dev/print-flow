@@ -1,19 +1,33 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link, useForm } from '@inertiajs/react';
+import { useEffect, useState } from 'react';
 
 export default function Create() {
     const { data, setData, post, processing, errors } = useForm({
-        lab_number: '',
-        equipment_type: '',
+        category: '',
+        location: '',
         issue_description: '',
-        reported_by: '',
         severity: '',
+        photo: null,
     });
+    const [photoPreview, setPhotoPreview] = useState(null);
+
+    useEffect(() => {
+        if (!data.photo) {
+            setPhotoPreview(null);
+            return;
+        }
+
+        const previewUrl = URL.createObjectURL(data.photo);
+        setPhotoPreview(previewUrl);
+
+        return () => URL.revokeObjectURL(previewUrl);
+    }, [data.photo]);
 
     const submit = (e) => {
         e.preventDefault();
 
-        post(route('equipment-issues.store'));
+        post(route('equipment-issues.store'), { forceFormData: true });
     };
 
     return (
@@ -21,16 +35,16 @@ export default function Create() {
             header={
                 <div>
                     <p className="text-sm font-medium text-indigo-600">
-                        IT Support Desk
+                        Barangay Services
                     </p>
 
                     <h2 className="mt-1 text-2xl font-bold text-gray-900">
-                        Report Equipment Issue
+                        Report a Community Issue
                     </h2>
                 </div>
             }
         >
-            <Head title="Report Equipment Issue" />
+            <Head title="Report a Community Issue" />
 
             <div className="min-h-screen bg-gray-50 py-10">
                 <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
@@ -40,15 +54,15 @@ export default function Create() {
                             href={route('equipment-issues.index')}
                             className="text-sm font-semibold text-indigo-600 hover:text-indigo-800"
                         >
-                            Back to Equipment Issues
+                            Back to Community Issues
                         </Link>
 
                         <h1 className="mt-5 text-3xl font-bold text-gray-900">
-                            Report Equipment Issue
+                            Report a Community Issue
                         </h1>
 
                         <p className="mt-2 text-sm text-gray-500">
-                            Provide the details of the damaged or malfunctioning equipment.
+                            Share what is happening in your neighborhood so barangay staff can follow up.
                         </p>
                     </div>
 
@@ -58,63 +72,61 @@ export default function Create() {
 
                             <div>
                                 <label className="block text-sm font-medium text-gray-700">
-                                    Laboratory
+                                    Issue category
                                 </label>
 
                                 <select
-                                    value={data.lab_number}
+                                    value={data.category}
                                     onChange={(e) =>
-                                        setData('lab_number', e.target.value)
+                                        setData('category', e.target.value)
                                     }
                                     className="mt-2 w-full rounded-md border-gray-300 shadow-sm"
                                 >
                                     <option value="">
-                                        Select laboratory
+                                        Choose a category
                                     </option>
-                                    <option value="Lab A">Lab A</option>
-                                    <option value="Lab B">Lab B</option>
-                                    <option value="Lab C">Lab C</option>
-                                    <option value="Mac Lab">Mac Lab</option>
+                                    <option value="Roads & walkways">Roads & walkways</option>
+                                    <option value="Drainage & flooding">Drainage & flooding</option>
+                                    <option value="Waste & sanitation">Waste & sanitation</option>
+                                    <option value="Street lighting">Street lighting</option>
+                                    <option value="Water supply">Water supply</option>
+                                    <option value="Public safety">Public safety</option>
+                                    <option value="Other">Other</option>
                                 </select>
 
-                                {errors.lab_number && (
+                                {errors.category && (
                                     <p className="mt-1 text-sm text-red-600">
-                                        {errors.lab_number}
+                                        {errors.category}
+                                    </p>
+                                )}
+                            </div>
+
+                            <div>
+                                <label htmlFor="location" className="block text-sm font-medium text-gray-700">
+                                    Location
+                                </label>
+
+                                <input
+                                    id="location"
+                                    type="text"
+                                    value={data.location}
+                                    onChange={(e) =>
+                                        setData('location', e.target.value)
+                                    }
+                                    placeholder="Street, landmark, or nearby address"
+                                    className="mt-2 w-full rounded-md border-gray-300 shadow-sm"
+                                />
+
+                                {errors.location && (
+                                    <p className="mt-1 text-sm text-red-600">
+                                        {errors.location}
                                     </p>
                                 )}
                             </div>
 
                             <div>
                                 <label className="block text-sm font-medium text-gray-700">
-                                    Equipment Type
-                                </label>
-
-                                <select
-                                    value={data.equipment_type}
-                                    onChange={(e) =>
-                                        setData('equipment_type', e.target.value)
-                                    }
-                                    className="mt-2 w-full rounded-md border-gray-300 shadow-sm"
-                                >
-                                    <option value="">
-                                        Select equipment
-                                    </option>
-                                    <option value="Monitor">Monitor</option>
-                                    <option value="Keyboard">Keyboard</option>
-                                    <option value="Mouse">Mouse</option>
-                                    <option value="LAN Cable">LAN Cable</option>
-                                </select>
-
-                                {errors.equipment_type && (
-                                    <p className="mt-1 text-sm text-red-600">
-                                        {errors.equipment_type}
-                                    </p>
-                                )}
-                            </div>
-
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700">
-                                    Issue Description
+                                    What is the problem?
                                 </label>
 
                                 <textarea
@@ -126,35 +138,13 @@ export default function Create() {
                                             e.target.value
                                         )
                                     }
-                                    placeholder="Describe the problem..."
+                                    placeholder="Describe what you noticed and when it started..."
                                     className="mt-2 w-full rounded-md border-gray-300 shadow-sm"
                                 />
 
                                 {errors.issue_description && (
                                     <p className="mt-1 text-sm text-red-600">
                                         {errors.issue_description}
-                                    </p>
-                                )}
-                            </div>
-
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700">
-                                    Reported By
-                                </label>
-
-                                <input
-                                    type="text"
-                                    value={data.reported_by}
-                                    onChange={(e) =>
-                                        setData('reported_by', e.target.value)
-                                    }
-                                    placeholder="Student name or College ID"
-                                    className="mt-2 w-full rounded-md border-gray-300 shadow-sm"
-                                />
-
-                                {errors.reported_by && (
-                                    <p className="mt-1 text-sm text-red-600">
-                                        {errors.reported_by}
                                     </p>
                                 )}
                             </div>
@@ -186,6 +176,23 @@ export default function Create() {
                                 )}
                             </div>
 
+                            <div>
+                                <label htmlFor="photo" className="block text-sm font-medium text-gray-700">
+                                    Photo evidence <span className="font-normal text-gray-500">(optional, up to 5 MB)</span>
+                                </label>
+                                <input
+                                    id="photo"
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={(e) => setData('photo', e.target.files[0] ?? null)}
+                                    className="mt-2 block w-full text-sm text-gray-700 file:mr-4 file:rounded-md file:border-0 file:bg-green-50 file:px-4 file:py-2 file:font-semibold file:text-green-800 hover:file:bg-green-100"
+                                />
+                                {errors.photo && <p className="mt-1 text-sm text-red-600">{errors.photo}</p>}
+                                {photoPreview && (
+                                    <img src={photoPreview} alt="Selected issue" className="mt-4 max-h-56 rounded-md border border-gray-200 object-cover" />
+                                )}
+                            </div>
+
                             <div className="flex justify-end gap-3 border-t border-gray-200 pt-6">
 
                                 <Link
@@ -200,7 +207,7 @@ export default function Create() {
                                     disabled={processing}
                                     className="rounded-md bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-indigo-700 disabled:opacity-50"
                                 >
-                                    {processing ? 'Submitting...' : 'Submit Issue'}
+                                    {processing ? 'Sending report...' : 'Send report'}
                                 </button>
 
                             </div>

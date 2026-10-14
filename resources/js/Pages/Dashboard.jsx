@@ -25,7 +25,7 @@ export default function Dashboard({ issues }) {
             header={
                 <div>
                     <p className="text-sm font-medium text-indigo-600">
-                        IT Support Desk
+                        Barangay Services
                     </p>
 
                     <h2 className="mt-1 text-2xl font-bold text-gray-900">
@@ -42,16 +42,15 @@ export default function Dashboard({ issues }) {
                     <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
                         <div>
                             <p className="text-sm font-semibold uppercase tracking-wider text-indigo-600">
-                                Computer Lab Diagnostics
+                                Community reports
                             </p>
 
                             <h1 className="mt-2 text-3xl font-bold tracking-tight text-gray-900">
-                                Equipment Issue Dashboard
+                                Barangay Services Dashboard
                             </h1>
 
                             <p className="mt-2 max-w-2xl text-sm leading-6 text-gray-500">
-                                Monitor reported laboratory equipment problems
-                                and track their resolution status.
+                                Follow neighborhood concerns from the first report through resolution.
                             </p>
                         </div>
 
@@ -59,7 +58,7 @@ export default function Dashboard({ issues }) {
                             href={route('equipment-issues.create')}
                             className="inline-flex w-fit items-center rounded-md bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-indigo-700"
                         >
-                            Report Equipment Issue
+                            Report a Community Issue
                         </Link>
                     </div>
 
@@ -75,13 +74,13 @@ export default function Dashboard({ issues }) {
                             </p>
 
                             <p className="mt-2 text-xs text-gray-400">
-                                All reported equipment issues
+                                All community reports
                             </p>
                         </div>
 
                         <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
                             <p className="text-sm font-medium text-gray-500">
-                                Open Tickets
+                                Open reports
                             </p>
 
                             <p className="mt-3 text-3xl font-bold text-blue-600">
@@ -89,13 +88,13 @@ export default function Dashboard({ issues }) {
                             </p>
 
                             <p className="mt-2 text-xs text-gray-400">
-                                Issues requiring attention
+                                Waiting for barangay follow-up
                             </p>
                         </div>
 
                         <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
                             <p className="text-sm font-medium text-gray-500">
-                                High Severity
+                                High priority
                             </p>
 
                             <p className="mt-3 text-3xl font-bold text-red-600">
@@ -103,7 +102,7 @@ export default function Dashboard({ issues }) {
                             </p>
 
                             <p className="mt-2 text-xs text-gray-400">
-                                High-priority open issues
+                                Urgent reports needing attention
                             </p>
                         </div>
 
@@ -117,7 +116,7 @@ export default function Dashboard({ issues }) {
                             </p>
 
                             <p className="mt-2 text-xs text-gray-400">
-                                Completed issue reports
+                                Closed community reports
                             </p>
                         </div>
 
@@ -128,11 +127,11 @@ export default function Dashboard({ issues }) {
                         <div className="flex flex-col gap-3 border-b border-gray-200 p-6 sm:flex-row sm:items-center sm:justify-between">
                             <div>
                                 <h2 className="text-xl font-bold text-gray-900">
-                                    Recent Equipment Issues
+                                    Recent Community Reports
                                 </h2>
 
                                 <p className="mt-1 text-sm text-gray-500">
-                                    The latest reported laboratory equipment problems.
+                                    The latest concerns shared by residents.
                                 </p>
                             </div>
 
@@ -151,7 +150,7 @@ export default function Dashboard({ issues }) {
                                 </h3>
 
                                 <p className="mt-2 text-sm text-gray-500">
-                                    There are currently no equipment issue reports.
+                                    New resident reports will appear here.
                                 </p>
                             </div>
                         ) : (
@@ -161,11 +160,11 @@ export default function Dashboard({ issues }) {
                                     <thead>
                                         <tr className="border-b border-gray-200 bg-gray-50 text-left">
                                             <th className="px-6 py-4 text-xs font-semibold uppercase tracking-wide text-gray-500">
-                                                Laboratory
+                                                Location
                                             </th>
 
                                             <th className="px-6 py-4 text-xs font-semibold uppercase tracking-wide text-gray-500">
-                                                Equipment
+                                                Category
                                             </th>
 
                                             <th className="px-6 py-4 text-xs font-semibold uppercase tracking-wide text-gray-500">
@@ -189,11 +188,11 @@ export default function Dashboard({ issues }) {
                                                 className="border-b border-gray-100 last:border-b-0 hover:bg-gray-50"
                                             >
                                                 <td className="px-6 py-4 text-sm font-medium text-gray-900">
-                                                    {issue.lab_number}
+                                                    {issue.location || 'Location not provided'}
                                                 </td>
 
                                                 <td className="px-6 py-4 text-sm text-gray-700">
-                                                    {issue.equipment_type}
+                                                    {issue.category || issue.equipment_type || 'Other'}
                                                 </td>
 
                                                 <td className="px-6 py-4 text-sm text-gray-700">

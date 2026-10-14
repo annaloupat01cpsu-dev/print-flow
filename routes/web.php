@@ -30,8 +30,10 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
-    Route::resource('equipment-issues', EquipmentIssueController::class);
-Route::patch('/equipment-issues/{equipmentIssue}/resolve', [EquipmentIssueController::class, 'resolve']) ->name('equipment-issue.resolve');
+    Route::resource('equipment-issues', EquipmentIssueController::class)
+        ->only(['index', 'create', 'store']);
+    Route::patch('/equipment-issues/{equipmentIssue}/resolve', [EquipmentIssueController::class, 'resolve'])
+        ->name('equipment-issue.resolve');
 });
 
 require __DIR__.'/auth.php';

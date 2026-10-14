@@ -3,7 +3,7 @@ import { Head, Link } from '@inertiajs/react';
 export default function Welcome({ auth }) {
     return (
         <>
-            <Head title="IT Support Desk" />
+            <Head title="Barangay Services" />
 
             <div className="min-h-screen bg-gray-50 text-gray-900">
 
@@ -14,7 +14,7 @@ export default function Welcome({ auth }) {
                             href="/"
                             className="text-xl font-bold text-indigo-600"
                         >
-                            IT Support Desk
+                            Barangay Services
                         </Link>
 
                         <div className="flex items-center gap-6">
@@ -40,6 +40,12 @@ export default function Welcome({ auth }) {
                                     >
                                         Register
                                     </Link>
+                                    <Link
+                                        href={route('staff.login')}
+                                        className="text-sm font-semibold text-green-800 transition hover:text-green-950"
+                                    >
+                                        Staff sign in
+                                    </Link>
                                 </>
                             )}
                         </div>
@@ -55,21 +61,18 @@ export default function Welcome({ auth }) {
                             <div className="max-w-3xl">
 
                                 <p className="text-sm font-semibold uppercase tracking-widest text-indigo-600">
-                                    Computer Lab Diagnostics
+                                    Community support
                                 </p>
 
                                 <h1 className="mt-4 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl lg:text-6xl">
-                                    Computer Lab Equipment
+                                    Barangay Services
                                     <span className="block text-indigo-600">
-                                        Issue Logger
+                                        for Every Resident
                                     </span>
                                 </h1>
 
                                 <p className="mt-6 max-w-2xl text-lg leading-8 text-gray-600">
-                                    Report damaged or malfunctioning laboratory
-                                    equipment, monitor reported issues, and
-                                    track their resolution through one
-                                    centralized support desk.
+                                    Report neighborhood problems with a photo, follow their progress, and help your barangay respond where it matters.
                                 </p>
 
                                 <div className="mt-8 flex flex-wrap gap-4">
@@ -82,7 +85,7 @@ export default function Welcome({ auth }) {
                                         }
                                         className="rounded-md bg-indigo-600 px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-700"
                                     >
-                                        Report an Issue
+                                        Report a Community Problem
                                     </Link>
 
                                     <Link
@@ -93,7 +96,7 @@ export default function Welcome({ auth }) {
                                         }
                                         className="rounded-md border border-gray-300 bg-white px-6 py-3 text-sm font-semibold text-gray-700 transition hover:bg-gray-50"
                                     >
-                                        View Equipment Issues
+                                        Browse Issue Reports
                                     </Link>
 
                                 </div>
@@ -108,17 +111,15 @@ export default function Welcome({ auth }) {
 
                             <div className="max-w-2xl">
                                 <p className="text-sm font-semibold uppercase tracking-widest text-indigo-600">
-                                    Support Workflow
+                                    Community support
                                 </p>
 
                                 <h2 className="mt-2 text-3xl font-bold tracking-tight text-gray-900">
-                                    Keep laboratory issues organized
+                                    From resident report to local response
                                 </h2>
 
                                 <p className="mt-4 text-gray-600">
-                                    The system provides a simple way to record
-                                    equipment problems and monitor their status
-                                    from report to resolution.
+                                    Keep reports, locations, and photo evidence together so staff can coordinate a clear response.
                                 </p>
                             </div>
 
@@ -130,13 +131,11 @@ export default function Welcome({ auth }) {
                                     </div>
 
                                     <h3 className="mt-5 text-lg font-bold text-gray-900">
-                                        Report Equipment Issues
+                                        Describe the issue
                                     </h3>
 
                                     <p className="mt-2 text-sm leading-6 text-gray-600">
-                                        Record the laboratory, equipment type,
-                                        issue description, reporter, and
-                                        severity of the problem.
+                                        Choose a service category, add a location, and attach a photo of the concern.
                                     </p>
                                 </div>
 
@@ -146,13 +145,11 @@ export default function Welcome({ auth }) {
                                     </div>
 
                                     <h3 className="mt-5 text-lg font-bold text-gray-900">
-                                        Track Open Tickets
+                                        Follow community reports
                                     </h3>
 
                                     <p className="mt-2 text-sm leading-6 text-gray-600">
-                                        View reported problems in one place and
-                                        identify issues that still require
-                                        attention.
+                                        See open and resolved issues in one shared register.
                                     </p>
                                 </div>
 
@@ -162,13 +159,11 @@ export default function Welcome({ auth }) {
                                     </div>
 
                                     <h3 className="mt-5 text-lg font-bold text-gray-900">
-                                        Monitor Resolution
+                                        Coordinate a response
                                     </h3>
 
                                     <p className="mt-2 text-sm leading-6 text-gray-600">
-                                        Update issue information and mark
-                                        equipment problems as resolved when
-                                        completed.
+                                        Barangay staff can review reports and mark completed work as resolved.
                                     </p>
                                 </div>
 
@@ -181,17 +176,15 @@ export default function Welcome({ auth }) {
                         <div className="mx-auto max-w-7xl px-4 py-16 text-center sm:px-6 lg:px-8">
 
                             <p className="text-sm font-semibold uppercase tracking-widest text-indigo-600">
-                                IT Support Desk
+                                Barangay Services
                             </p>
 
                             <h2 className="mt-3 text-3xl font-bold text-gray-900">
-                                Computer Lab Diagnostics & Fault Tracking
+                                Better neighborhood reporting, in one place
                             </h2>
 
                             <p className="mx-auto mt-4 max-w-2xl text-sm leading-6 text-gray-600">
-                                A centralized system for reporting,
-                                monitoring, and managing laboratory equipment
-                                issues.
+                                A shared record of community concerns and the follow-up they receive.
                             </p>
 
                             <Link
@@ -215,16 +208,16 @@ export default function Welcome({ auth }) {
 
                         <div>
                             <p className="font-semibold text-white">
-                                IT Support Desk
+                                Barangay Services
                             </p>
 
                             <p className="mt-1 text-sm text-gray-400">
-                                Computer Lab Diagnostics & Fault Tracking
+                                Community issue reporting
                             </p>
                         </div>
 
                         <p className="text-sm text-gray-500">
-                            Equipment Issue Logger
+                            Resident and staff portal
                         </p>
 
                     </div>

@@ -5,7 +5,7 @@ import TextInput from '@/Components/TextInput';
 import GuestLayout from '@/Layouts/GuestLayout';
 import { Head, Link, useForm } from '@inertiajs/react';
 
-export default function Login({ status, canResetPassword }) {
+export default function Login({ status, canResetPassword, isStaffLogin = false }) {
     const { data, setData, post, processing, errors, reset } = useForm({
         email: '',
         password: '',
@@ -15,14 +15,14 @@ export default function Login({ status, canResetPassword }) {
     const submit = (e) => {
         e.preventDefault();
 
-        post(route('login'), {
+        post(route(isStaffLogin ? 'staff.login' : 'login'), {
             onFinish: () => reset('password'),
         });
     };
 
     return (
         <GuestLayout>
-            <Head title="Log In" />
+            <Head title={isStaffLogin ? 'Staff sign in' : 'Resident sign in'} />
 
             <div className="min-h-screen bg-gray-50 px-4 py-12 sm:px-6 lg:px-8">
                 <div className="mx-auto max-w-md">
@@ -32,19 +32,21 @@ export default function Login({ status, canResetPassword }) {
                             href="/"
                             className="text-2xl font-bold text-indigo-600"
                         >
-                            IT Support Desk
+                            Barangay Services
                         </Link>
 
                         <p className="mt-4 text-sm font-semibold uppercase tracking-widest text-indigo-600">
-                            Computer Lab Diagnostics
+                            {isStaffLogin ? 'Staff portal' : 'Community portal'}
                         </p>
 
                         <h1 className="mt-2 text-3xl font-bold text-gray-900">
-                            Welcome Back
+                            {isStaffLogin ? 'Staff sign in' : 'Resident sign in'}
                         </h1>
 
                         <p className="mt-2 text-sm text-gray-500">
-                            Log in to access the equipment issue management system.
+                            {isStaffLogin
+                                ? 'Sign in with your barangay staff account to manage community reports.'
+                                : 'Sign in to report a concern and follow issues in your community.'}
                         </p>
                     </div>
 
@@ -147,16 +149,25 @@ export default function Login({ status, canResetPassword }) {
                                     className="w-full py-3"
                                     disabled={processing}
                                 >
-                                    {processing ? 'Logging In...' : 'Log In'}
+                                    {processing ? 'Signing in...' : 'Sign in'}
                                 </PrimaryButton>
 
-                                <p className="mt-5 text-center text-sm text-gray-600">
+                                {!isStaffLogin && <p className="mt-5 text-center text-sm text-gray-600">
                                     Don't have an account?{' '}
                                     <Link
                                         href={route('register')}
                                         className="font-semibold text-indigo-600 hover:text-indigo-800"
                                     >
                                         Create an Account
+                                    </Link>
+                                </p>}
+                                <p className="mt-4 text-center text-sm text-gray-600">
+                                    {isStaffLogin ? 'Resident?' : 'Barangay staff?'}{' '}
+                                    <Link
+                                        href={route(isStaffLogin ? 'login' : 'staff.login')}
+                                        className="font-semibold text-green-700 hover:text-green-900"
+                                    >
+                                        {isStaffLogin ? 'Resident sign in' : 'Staff sign in'}
                                     </Link>
                                 </p>
 
@@ -171,7 +182,7 @@ export default function Login({ status, canResetPassword }) {
                             href="/"
                             className="text-sm font-medium text-gray-500 hover:text-indigo-600"
                         >
-                            Back to IT Support Desk
+                            Back to Barangay Services
                         </Link>
                     </div>
 

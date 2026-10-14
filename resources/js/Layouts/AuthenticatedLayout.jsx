@@ -2,7 +2,6 @@ import ApplicationLogo from '@/Components/ApplicationLogo';
 import Dropdown from '@/Components/Dropdown';
 import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
-import Dashboard from '@/Pages/Dashboard';
 import { Link, usePage } from '@inertiajs/react';
 import { useState } from 'react';
 
@@ -28,7 +27,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                     href="/"
                                     className="text-xl font-bold text-indigo-600"
                                 >
-                                    IT Support Desk
+                                    Barangay Services
                                 </Link>
                             </div>
 
@@ -45,7 +44,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                     href={route('equipment-issues.index')}
                                     active={issuesActive}
                                 >
-                                    Equipment Issues
+                                    Community Issues
                                 </NavLink>
 
                                 <NavLink
