@@ -1,4 +1,3 @@
-import ApplicationLogo from '@/Components/ApplicationLogo';
 import Dropdown from '@/Components/Dropdown';
 import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
@@ -12,12 +11,14 @@ export default function AuthenticatedLayout({ header, children }) {
         useState(false);
     
     const dashboardActive = route().current('dashboard');
-    const issuesActive = route().current('equipment-issues.index')
-    const createActive = route().current('equipment-issues.create');
+    const ordersActive = route().current('print-orders.index');
+    const createOrderActive = route().current('print-orders.create');
+    const issuesActive = route().current('equipment-issues.index');
+    const createIssueActive = route().current('equipment-issues.create');
 
     return (
-        <div className="min-h-screen bg-gray-50">
-            <nav className="border-b border-gray-200 bg-white">
+        <div className="min-h-screen bg-[#fbfaf8]">
+            <nav className="border-b border-slate-200 bg-white">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="flex h-16 justify-between">
 
@@ -25,9 +26,9 @@ export default function AuthenticatedLayout({ header, children }) {
                             <div className="flex shrink-0 items-center">
                                 <Link
                                     href="/"
-                                    className="text-xl font-bold text-indigo-600"
+                                    className="text-xl font-extrabold tracking-tight text-slate-900"
                                 >
-                                    Barangay Services
+                                    printflow<span className="text-orange-600">.</span>
                                 </Link>
                             </div>
 
@@ -41,18 +42,36 @@ export default function AuthenticatedLayout({ header, children }) {
                                 </NavLink>
 
                                 <NavLink
-                                    href={route('equipment-issues.index')}
-                                    active={issuesActive}
+                                    href={route('print-orders.index')}
+                                    active={ordersActive}
                                 >
-                                    Community Issues
+                                    Print Orders
                                 </NavLink>
 
-                                <NavLink
-                                    href={route('equipment-issues.create')}
-                                    active={createActive}
-                                >
-                                    Report Issue
-                                </NavLink>
+                                {!user.role || user.role !== 'staff' ? (
+                                    <NavLink
+                                        href={route('print-orders.create')}
+                                        active={createOrderActive}
+                                    >
+                                        New Order
+                                    </NavLink>
+                                ) : (
+                                    <>
+                                        <NavLink
+                                            href={route('equipment-issues.index')}
+                                            active={issuesActive}
+                                        >
+                                            Community Issues
+                                        </NavLink>
+
+                                        <NavLink
+                                            href={route('equipment-issues.create')}
+                                            active={createIssueActive}
+                                        >
+                                            Report Issue
+                                        </NavLink>
+                                    </>
+                                )}
 
                             </div>
                         </div>
@@ -66,7 +85,7 @@ export default function AuthenticatedLayout({ header, children }) {
 
                                             <button
                                                 type="button"
-                                                className="inline-flex items-center rounded-md border border-transparent bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-700 transition hover:text-indigo-600 focus:outline-none"
+                                                className="inline-flex items-center rounded-md border border-transparent bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-700 transition hover:text-orange-700 focus:outline-none"
                                             >
                                                 {user.name}
 
@@ -177,18 +196,36 @@ export default function AuthenticatedLayout({ header, children }) {
                         </ResponsiveNavLink>
 
                         <ResponsiveNavLink
-                            href={route('equipment-issues.index')}
-                            active={issuesActive}
+                            href={route('print-orders.index')}
+                            active={ordersActive}
                         >
-                            Equipment Issues
+                            Print Orders
                         </ResponsiveNavLink>
 
-                        <ResponsiveNavLink
-                            href={route('equipment-issues.create')}
-                            active={createActive}
-                        >
-                            Report Issue
-                        </ResponsiveNavLink>
+                        {!user.role || user.role !== 'staff' ? (
+                            <ResponsiveNavLink
+                                href={route('print-orders.create')}
+                                active={createOrderActive}
+                            >
+                                New Order
+                            </ResponsiveNavLink>
+                        ) : (
+                            <>
+                                <ResponsiveNavLink
+                                    href={route('equipment-issues.index')}
+                                    active={issuesActive}
+                                >
+                                    Community Issues
+                                </ResponsiveNavLink>
+
+                                <ResponsiveNavLink
+                                    href={route('equipment-issues.create')}
+                                    active={createIssueActive}
+                                >
+                                    Report Issue
+                                </ResponsiveNavLink>
+                            </>
+                        )}
 
                     </div>
 

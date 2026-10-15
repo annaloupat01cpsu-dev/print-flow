@@ -25,31 +25,31 @@ export default function Register() {
         <GuestLayout>
             <Head title="Create Account" />
 
-            <div className="min-h-screen bg-gray-50 px-4 py-12 sm:px-6 lg:px-8">
+            <div className="min-h-screen bg-[#fbfaf8] px-4 py-12 sm:px-6 lg:px-8">
                 <div className="mx-auto max-w-md">
 
                     <div className="mb-8 text-center">
                         <Link
                             href="/"
-                            className="text-2xl font-bold text-indigo-600"
+                            className="text-2xl font-extrabold tracking-tight text-slate-900"
                         >
-                            IT Support Desk
+                            printflow<span className="text-orange-600">.</span>
                         </Link>
 
-                        <p className="mt-4 text-sm font-semibold uppercase tracking-widest text-indigo-600">
-                            Computer Lab Diagnostics
+                        <p className="mt-4 text-xs font-bold uppercase tracking-[0.18em] text-orange-700">
+                            Your print projects
                         </p>
 
-                        <h1 className="mt-2 text-3xl font-bold text-gray-900">
-                            Create an Account
+                        <h1 className="mt-2 text-3xl font-black tracking-tight text-slate-950">
+                            Create your account
                         </h1>
 
-                        <p className="mt-2 text-sm text-gray-500">
-                            Register to report and manage laboratory equipment issues.
+                        <p className="mt-2 text-sm text-slate-600">
+                            Sign up to place print orders and follow their progress.
                         </p>
                     </div>
 
-                    <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm sm:p-8">
+                    <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-xl shadow-slate-900/5 sm:p-8">
 
                         <form onSubmit={submit} className="space-y-5">
 
@@ -188,7 +188,7 @@ export default function Register() {
                             href="/"
                             className="text-sm font-medium text-gray-500 hover:text-indigo-600"
                         >
-                            Back to IT Support Desk
+                            Back to Printflow
                         </Link>
                     </div>
 
